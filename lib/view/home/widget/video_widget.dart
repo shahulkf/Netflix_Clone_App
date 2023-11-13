@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:netflix_clone/core/constants.dart';
+import 'package:netflix_clone/controller/api/api_constants.dart';
 
 import '../../../core/colors/colors.dart';
 
 class VideoWidget extends StatelessWidget {
+  final String image;
   const VideoWidget({
+    required this.image,
     super.key,
   });
 
@@ -16,7 +18,7 @@ class VideoWidget extends StatelessWidget {
           height: 210,
           width: double.infinity,
           child: Image.network(
-           kEveryoneWatchingImage ,
+           ApiConstants.imageBaseUrl + image,
             fit: BoxFit.cover,
           ),
         ),

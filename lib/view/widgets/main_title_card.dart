@@ -29,7 +29,7 @@ class MainTitleCard extends StatelessWidget {
           return ListView(
             scrollDirection: Axis.horizontal,
               children: List.generate(
-            10,
+            value.length,
             (index) =>  CardImages(image: value[index].posterPath),
           ));
         }

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:netflix_clone/controller/api/api_constants.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
+import 'package:netflix_clone/model/movie.dart';
 
 class VideoListItem extends StatelessWidget {
   final int index;
-  const VideoListItem({super.key, required this.index});
+  final String image;
+  const VideoListItem({super.key, required this.index,required this.image});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          color: Colors.accents[index % Colors.accents.length],
+         decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(ApiConstants.imageBaseUrl
+         +image,),fit: BoxFit.cover))
         ),
         Align(
           alignment: Alignment.bottomCenter,

@@ -13,12 +13,20 @@ import 'package:netflix_clone/view/home/widget/number_card.dart';
 
 ValueNotifier <bool> scrollnotifier = ValueNotifier(true);
 ValueNotifier<List<Movie>> nowPlaying = ValueNotifier([]);
+ValueNotifier<List<Movie>> trendingNow = ValueNotifier([]);
+ValueNotifier<List<Movie>>tenseDramas = ValueNotifier([]);
+ValueNotifier<List<Movie>>upcoming = ValueNotifier([]);
+ValueNotifier<List<Movie>>topTen= ValueNotifier([]);
 
 class ScreenHome extends StatelessWidget {
   const ScreenHome({super.key});
 
   getDatasFromApi()async{
     nowPlaying.value = await Api().getNowPlaying();
+    trendingNow.value = await Api().trendingNow();
+    tenseDramas.value = await Api().tenseDramas();
+    upcoming.value = await Api().upcoming();
+    topTen.value = await Api().topTen();
   }
 
   @override
@@ -77,29 +85,37 @@ class ScreenHome extends StatelessWidget {
                 title: 'Released in the Past Year',
               ),
               MainTitleCard(
-                listNotifier: nowPlaying,
+                listNotifier: trendingNow,
                 title: 'Trending Now',
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MainTitleWidget(
+                  
                     title: 'Top 10 Tv Shows in India Today',
                   ),
                   kHeight20,
                   LimitedBox(
                     maxHeight: 200,
-                    child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: List.generate(
-                          10,
-                          (index) => NumberCard(index: index),
-                        )),
+                    child: ValueListenableBuilder(
+                       valueListenable: topTen,
+                      builder: (context,value,_) {
+                        return ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: List.generate(
+                              value.length,
+                              (index) => NumberCard(
+                                imageUrl: value[index].posterPath,
+                                index: index),
+                            ));
+                      }
+                    ),
                   )
                 ],
               ),
-              MainTitleCard(title: 'Tense Dramas',listNotifier: nowPlaying),
-              MainTitleCard(title: 'South Indian Cinemas',listNotifier: nowPlaying,),
+              MainTitleCard(title: 'Tense Dramas',listNotifier: tenseDramas),
+              MainTitleCard(title: 'Upcoming',listNotifier: upcoming,),
             ],
           ),
           scrollnotifier.value == true? AnimatedContainer(

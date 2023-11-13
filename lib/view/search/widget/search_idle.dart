@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix_clone/controller/api/api_constants.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
 import 'package:netflix_clone/core/constants.dart';
+import 'package:netflix_clone/model/movie.dart';
+import 'package:netflix_clone/view/home/screen_home.dart';
 import 'package:netflix_clone/view/search/widget/title.dart';
 
 const imageUrl =
@@ -19,11 +22,16 @@ class SearchIdle extends StatelessWidget {
          const SearchTextTitle(title: 'Top Searches',),
         KHeight,
         Expanded(
-          child: ListView.separated(
-           shrinkWrap: true,
-            itemBuilder: (ctx, index) => const TopSearchItemTile(),
-            separatorBuilder: (ctx, index) => kHeight20,
-            itemCount: 10,
+          child: ValueListenableBuilder(
+            valueListenable: topTen,
+            builder: (context,value,_) {
+              return ListView.separated(
+               shrinkWrap: true,
+                itemBuilder: (ctx, index) => TopSearchItemTile(movie: value[index]),
+                separatorBuilder: (ctx, index) => kHeight20,
+                itemCount: value.length,
+              );
+            }
           ),
         ), 
       ],
@@ -34,7 +42,8 @@ class SearchIdle extends StatelessWidget {
 
 
 class TopSearchItemTile extends StatelessWidget {
-  const TopSearchItemTile({super.key});
+  const TopSearchItemTile({super.key,required this.movie});
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -44,16 +53,17 @@ class TopSearchItemTile extends StatelessWidget {
         Container(
           width: screenWidth * 0.35,
           height: 70,
-          decoration:  const BoxDecoration(
+          decoration:   BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: NetworkImage(imageUrl),
+              image: NetworkImage(ApiConstants.imageBaseUrl +movie.backdropPath),
               )
           ),
         ),
+        KWidth,
 
-       const Expanded(
-          child: Text('Movie Name',style: TextStyle(
+       Expanded(
+          child: Text(movie.title,style:const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16),
           ),
