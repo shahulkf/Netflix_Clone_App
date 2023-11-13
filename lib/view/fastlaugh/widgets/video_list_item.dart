@@ -6,16 +6,19 @@ import 'package:netflix_clone/model/movie.dart';
 class VideoListItem extends StatelessWidget {
   final int index;
   final String image;
-  const VideoListItem({super.key, required this.index,required this.image});
+  const VideoListItem({super.key, required this.index, required this.image});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-         decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(ApiConstants.imageBaseUrl
-         +image,),fit: BoxFit.cover))
-        ),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(
+                      ApiConstants.imageBaseUrl + image,
+                    ),
+                    fit: BoxFit.cover))),
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
@@ -83,7 +86,7 @@ class VideoActionWidget extends StatelessWidget {
             icon,
             color: baseColor,
             size: 30,
-            shadows:const [
+            shadows: const [
               Shadow(
                   offset: Offset(
                     0.90,
